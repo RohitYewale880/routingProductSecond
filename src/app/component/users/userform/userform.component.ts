@@ -50,6 +50,9 @@ isInEditMode: boolean = false
           let CurrentAdd = this.formcontrols['address'].get('current')?.value;
           this.formcontrols['address'].get('permanent')?.patchValue(CurrentAdd)
           this.formcontrols['address'].get('permanent')?.disable()
+        }else if(this.isInEditMode && !val){
+          this.formcontrols['address'].get('permanent')?.patchValue(this.edituser.address.permanent)
+          this.formcontrols['address'].get('permanent')?.enable()
         }
         else {
           this.formcontrols['address'].get('permanent')?.reset()
@@ -108,7 +111,7 @@ isInEditMode: boolean = false
         .subscribe({
           next: res => {
             this.snackbar.OpenSnakbar(res.msg)
-            this.router.navigate(['/users'])
+            this.router.navigate(['/users', res.data.userId]);
           },
           error: err => {
             this.snackbar.OpenSnakbar(err.msg)
@@ -129,6 +132,9 @@ isInEditMode: boolean = false
           this.edituser = res
           this.isInEditMode = true
           this.userForm.patchValue(this.edituser)
+          if(res.userRole === 'Candidate'){
+            this.userForm.disable()
+          }
           this.skillsArr.clear()
           this.edituser.skills.forEach(ele => {
             let control = new FormControl(ele)
@@ -148,7 +154,7 @@ isInEditMode: boolean = false
         .subscribe({
           next: res => {
             this.snackbar.OpenSnakbar(res.msg)
-            this.router.navigate(['/users'])
+            this.router.navigate(['/users', res.data.userId]);
           },
           error: err => {
             this.snackbar.OpenSnakbar(err.msg)

@@ -12,6 +12,9 @@
                 <ul class="list-group">
                     <li class="list-group-item"
                     [routerLink]="['/users', user.userId]"
+                    [queryParams]="{userrole : user.userRole}"
+                    routerLinkActive="active"
+                    
                     *ngFor="let user of userdata; trackBy : trackbyfun"
                     >
                         <strong>{{user.userName}}</strong>
@@ -29,7 +32,7 @@
             </mat-card>
         </div>
         <div class="col-md-8">
-
+            <router-outlet></router-outlet>
         </div>
     </div>
 </div>

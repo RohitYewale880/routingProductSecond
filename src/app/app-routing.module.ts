@@ -12,52 +12,58 @@ import { SingleuserComponent } from './component/users/singleuser/singleuser.com
 const routes: Routes = [
   {
     path: '',
-    component : HomeComponent
+    component: HomeComponent
   },
   {
     path: 'home',
-    component : HomeComponent
+    component: HomeComponent
   },
   {
     path: 'product',
-    component : ProductsComponent
+    component: ProductsComponent
   },
   {
     path: 'users',
-    component : UsersComponent
+    component: UsersComponent,
+    children: [
+      {
+        path: 'userAdd',
+        component: UserformComponent
+      },
+      {
+        path: ':id',
+        component: SingleuserComponent
+      },
+      {
+        path: ':id/edit',
+        component: UserformComponent
+      }
+    ]
   },
   {
     path: 'fairs',
-    component : FairsComponent
+    component: FairsComponent
   },
   {
     path: 'product/adduser',
-    component : ProductformComponent
+    component: ProductformComponent
   },
   {
     path: 'product/:id',
-    component : SinglproductComponent
+    component: SinglproductComponent
   },
   {
     path: 'product/:id/edit',
-    component : ProductformComponent
-  },
-  {
-    path : 'users/userAdd',
-    component : UserformComponent
-  },
-  {
-    path : 'users/:id',
-    component : SingleuserComponent
-  },
-  {
-    path : 'users/:id/edit',
-    component : UserformComponent
+    component: ProductformComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      onSameUrlNavigation: 'reload'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

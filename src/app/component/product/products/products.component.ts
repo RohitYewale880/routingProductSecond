@@ -29,8 +29,10 @@ export class ProductsComponent implements OnInit {
     return product.pid
   }
 
-  Singlaproduct(id : string){
-    this.router.navigate(['product',id])
+  Singlaproduct(product : Iproduct){
+    this.router.navigate(['product', product.pid],{
+      queryParams : {cr : product.canReturn}
+    })
   }
 
 }

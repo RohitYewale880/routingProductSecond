@@ -65,6 +65,7 @@
                 <button
                 *ngIf="isineditmode"
                 (click)="onUpadate()"
+                [disabled]="editobj.canReturn === 0"
                  type="button" mat-raised-button color="primary" class="w-100">Update Product</button>
             </form>
         </mat-card>
