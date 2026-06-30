@@ -10,29 +10,30 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductsComponent implements OnInit {
 
- productdata !:Array<Iproduct>
+  productdata !: Array<Iproduct>
   constructor(
-    private productService:ProductService,
+    private productService: ProductService,
     private routes: ActivatedRoute,
-    private router : Router
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.getchdata()
   }
 
-  getchdata(){
-    this.productdata = this.productService.productsArr
+  getchdata() {
+    this.productService.getProducts()
+      .subscribe(res => {
+        this.productdata = res
+        if (this.productdata.length > 0 && this.router.url === '/product') {
+          this.router.navigate([res[0].pid])
+        }
+      })
   }
 
-  trackByfun(index:number,product:Iproduct){
+  trackByfun(index: number, product: Iproduct) {
     return product.pid
   }
 
-  Singlaproduct(product : Iproduct){
-    this.router.navigate(['product', product.pid],{
-      queryParams : {cr : product.canReturn}
-    })
-  }
 
 }

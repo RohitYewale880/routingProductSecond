@@ -1,4 +1,4 @@
-   import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Iproduct } from 'src/app/modals/product';
@@ -13,47 +13,50 @@ import { GetconfirmComponent } from '../../getconfirm/getconfirm.component';
 })
 export class SinglproductComponent implements OnInit {
 
-   productId !:string;
+  productId !: string;
   product !: Iproduct;
   constructor(
     private route: ActivatedRoute,
-    private router : Router,
+    private router: Router,
     private productService: ProductService,
-    private _matdilog : MatDialog,
-    private _snakbar :SnakbarService
+    private _matdilog: MatDialog,
+    private _snakbar: SnakbarService
   ) { }
 
   ngOnInit(): void {
     this.getsingleproduct()
   }
 
-  getsingleproduct(){
-    this.productId = this.route.snapshot.paramMap.get('id')!;
-    this.productService.getProductById(this.productId)
-      .subscribe({
-        next : (res => {
-          this.product = res!
-        }),
-        error : err => {
-          console.log(err);
-        }
-      })
+  getsingleproduct() {
+    this.route.paramMap.subscribe(res => {
+      this.productId = res.get('id')!
+
+      this.productService.getProductById(this.productId)
+        .subscribe({
+          next: (res => {
+            this.product = res!
+          }),
+          error: err => {
+            console.log(err);
+          }
+        })
+    })
   }
 
-  onRemove(){
+  onRemove() {
     this._matdilog.open(GetconfirmComponent, {
-      width : '500px',
-      disableClose : true,
-      data : `Are you sure do you want to remove this product whose id is ${this.product.pid}`
+      width: '500px',
+      disableClose: true,
+      data: `Are you sure do you want to remove this product whose id is ${this.product.pid}`
     }).afterClosed().subscribe(res => {
-      if(res){
+      if (res) {
         this.productService.Removeproduct(this.product.pid)
           .subscribe({
-            next : res => {
-              this.router.navigate(['product'])
+            next: res => {
+              this.navigeteFirst()
               this._snakbar.OpenSnakbar(res.msg)
             },
-            error : err => {
+            error: err => {
               console.log(err);
             }
           })
@@ -61,10 +64,17 @@ export class SinglproductComponent implements OnInit {
     })
   }
 
-  onEdit(){
-    this.router.navigate(['/product', this.productId, 'edit'],{
-      queryParamsHandling : 'preserve',
-      relativeTo : this.route
+  navigeteFirst(){
+    this.productService.getProducts()
+      .subscribe(res => {
+        this.router.navigate(['/product', res[0].pid])
+      })
+  }
+
+  onEdit() {
+    this.router.navigate(['/product', this.productId, 'edit'], {
+      queryParamsHandling: 'preserve',
+      relativeTo: this.route
     })
   }
 

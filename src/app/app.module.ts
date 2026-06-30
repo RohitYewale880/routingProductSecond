@@ -21,6 +21,9 @@ import { UsersComponent } from './component/users/users/users.component';
 import { SingleuserComponent } from './component/users/singleuser/singleuser.component';
 import { UserformComponent } from './component/users/userform/userform.component';
 import { FairsComponent } from './component/fairs/fairs/fairs.component';
+import { EmaildashComponent } from './component/emails/emaildash/emaildash.component';
+import { FairscardComponent } from './component/fairs/fairscard/fairscard.component';
+import { FairDescriptionComponent } from './component/fairs/fair-description/fair-description.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { FairsComponent } from './component/fairs/fairs/fairs.component';
     UsersComponent,
     SingleuserComponent,
     UserformComponent,
-    FairsComponent
+    FairsComponent,
+    EmaildashComponent,
+    FairscardComponent,
+    FairDescriptionComponent
   ],
   imports: [
     BrowserModule,

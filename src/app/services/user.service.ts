@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Ires, Iuser } from '../modals/product';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-   UsersDetails : Array<Iuser>= [
+  private refreshUsers = new Subject<void>();
+  refreshUsers$ = this.refreshUsers.asObservable();
+  UsersDetails: Array<Iuser> = [
     {
       userName: 'Rohit Yewale',
       userId: 'EMP101',
@@ -62,40 +64,44 @@ export class UserService {
 
   constructor() { }
 
-  getusers() : Observable<Array<Iuser>>{
+  refreshList() {
+    this.refreshUsers.next();
+  }
+
+  getusers(): Observable<Array<Iuser>> {
     return of(this.UsersDetails)
   }
 
-  getsingleuser(id : string) : Observable<Iuser>{
+  getsingleuser(id: string): Observable<Iuser> {
     return of(this.UsersDetails.find(ele => ele.userId === id)!)
   }
 
-  adduser(user : Iuser): Observable<Ires<Iuser>>{
+  adduser(user: Iuser): Observable<Ires<Iuser>> {
     this.UsersDetails.push(user)
 
     return of({
-      msg : `The user is with id ${user.userId} is Added successfully!!!`,
-      data : user
+      msg: `The user is with id ${user.userId} is Added successfully!!!`,
+      data: user
     })
   }
 
-  removeuser(id : string) : Observable<Ires<Iuser>>{
-    let getindex =  this.UsersDetails.findIndex(ele => ele.userId === id)
+  removeuser(id: string): Observable<Ires<Iuser>> {
+    let getindex = this.UsersDetails.findIndex(ele => ele.userId === id)
     let user = this.UsersDetails.splice(getindex, 1)
 
     return of({
-      msg : `The user is with id ${user[0].userId} is Removed successfully!!!`,
-      data : user[0]
+      msg: `The user is with id ${user[0].userId} is Removed successfully!!!`,
+      data: user[0]
     })
   }
 
-  updateuser(user : Iuser) : Observable<Ires<Iuser>>{
-    let getindex =  this.UsersDetails.findIndex(ele => ele.userId === user.userId)
+  updateuser(user: Iuser): Observable<Ires<Iuser>> {
+    let getindex = this.UsersDetails.findIndex(ele => ele.userId === user.userId)
     this.UsersDetails[getindex] = user
 
     return of({
-      msg : `The user is with id ${user.userId} is Updated successfully!!!`,
-      data : user
+      msg: `The user is with id ${user.userId} is Updated successfully!!!`,
+      data: user
     })
   }
 }

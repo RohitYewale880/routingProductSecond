@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Ifairs } from 'src/app/modals/product';
+import { FairsService } from 'src/app/services/fairs.service';
 
 @Component({
   selector: 'app-fairs',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FairsComponent implements OnInit {
 
-  constructor() { }
+  fairsdata ! : Ifairs[]
+  constructor(private _fairservice : FairsService) { }
 
   ngOnInit(): void {
+   this.getfairsdata()
   }
 
+  getfairsdata(){
+    this._fairservice.getfairsArr()
+      .subscribe(res => {
+        this.fairsdata = res
+      })
+  }
+
+  trackbyfun(index : number, fair : Ifairs){
+    return fair.fairId
+  }
 }

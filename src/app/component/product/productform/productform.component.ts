@@ -50,7 +50,7 @@ export class ProductformComponent implements OnInit {
       this._productservice.Addproduct(newobj)
         .subscribe({
           next: res => {
-            this.router.navigate(['product'])
+            this.router.navigate(['/product', res.data.pid])
             this._snakbar.OpenSnakbar(res.msg)
           },
           error: err => {
@@ -92,7 +92,7 @@ export class ProductformComponent implements OnInit {
         .subscribe({
           next: res => {
             this.isineditmode = false
-            this.router.navigate(['product'])
+            this.router.navigate(['/product', res.data.pid])
             this._snakbar.OpenSnakbar(res.msg)
           },
           error: err => {
